@@ -1,0 +1,185 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Alumno</title>
+    </h:head>
+    <h:body>
+        <p:panel id="pnlAlumno" header="Alumno" footer="18">
+            <h:form id="frmAlumno">
+                <p:panelGrid id="tblAltaAlumno" columns="2">
+                    <p:outputLabel for="txtDni" value="DNI: "/>
+                    <p:inputNumber id="txtDni" value="#{alumnoFormBean.dni}" required="true"/>
+                    <p:outputLabel for="txtApellido" value="Apellido: "/>
+                    <p:inputText id="txtApellido" value="#{alumnoFormBean.apellido}" required="true"/>
+                    <p:outputLabel for="txtNombre" value="Nombre: "/>
+                    <p:inputText id="txtNombre" value="#{alumnoFormBean.nombre}" required="true"/>
+                    <p:outputLabel for="txtFecha" value="Fecha de Nacimiento: "/>
+                    <p:calendar id="txtFecha" value="#{alumnoFormBean.fechaNac}"  required="true"/>
+                    <p:outputLabel for="txtDomicilio" value="Domicilio: "/>
+                    <p:inputText id="txtDomicilio" value="#{alumnoFormBean.domicilio}" required="true"/>
+                    <p:outputLabel for="txtTelefono" value="Telefono: "/>
+                    <p:inputNumber id="txtTelefono" value="#{alumnoFormBean.telefono}" required="true"/>
+                    <p:outputLabel for="txtMateria" value="Materia: "/>
+                    <p:selectOneMenu id="txtMateria" value="#{alumnoFormBean.materia}" converter="omnifaces.SelectItemsConverter">
+                        <f:selectItems value="#{alumnoFormBean.listaMateria}" 
+                                       var="a" 
+                                       itemLabel="#{a.denominacion}" itemValue="#{a}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel/>
+                    <p:commandButton id="btnAgregarAlumno" value="Agregar"
+                                     update="tblMuestraAlumno"
+                                     actionListener="#{alumnoFormBean.agregarAlumno()}"/>
+                                     
+                </p:panelGrid>
+                <h:panelGrid id="tblMuestraAlumno" columns="8">
+                    <p:dataTable id="dtTblAlumno" value="#{alumnoFormBean.listaAlumno.listaAlumno}"
+                                 var="cadaAlumno"
+                                 emptyMessage="No hay nada">
+                        <p:column headerText="DNI">
+                            <p:outputLabel value="#{cadaAlumno.dni}"/>
+                        </p:column>
+                        <p:column headerText="Apellido">
+                            <p:outputLabel value="#{cadaAlumno.apellido}"/>
+                        </p:column>
+                        <p:column headerText="Nombre">
+                            <p:outputLabel value="#{cadaAlumno.nombre}"/>
+                        </p:column>
+                        <p:column headerText="Fecha de Nacimineto">
+                            <p:outputLabel value="#{cadaAlumno.fechaNac}">
+                               <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </p:outputLabel>
+                        </p:column>
+                        <p:column headerText="Domicilio">
+                            <p:outputLabel value="#{cadaAlumno.domicilio}"/>
+                        </p:column>
+                        <p:column headerText="Telefono">
+                            <p:outputLabel value="#{cadaAlumno.telefono}"/>
+                        </p:column>
+                        <p:column headerText="Materia">
+                            <p:outputLabel value="#{cadaAlumno.materia}"/>
+                        </p:column>
+                        <p:column headerText="Edicion">
+                            <p:commandButton icon="ui-icon-pencil"
+                                             oncomplete="PF('modificarAlumno').show()"
+                                             update=":frmModificarAlumno"
+                                             actionListener="#{alumnoFormBean.establecerAlumno(cadaAlumno)}"/>
+                            <p:commandButton icon="ui-icon-trash"
+                                             oncomplete="PF('eliminarAlumno').show()"
+                                             update=":frmEliminarAlumno"
+                                             actionListener="#{alumnoFormBean.establecerAlumno(cadaAlumno)}"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGrid>
+            </h:form>
+        </p:panel>
+        
+        <p:dialog id="dlgModificarAlumno"
+                  widgetVar="modificarAlumno"
+                  header="Modificacion de Alumno"
+                  resizable="false"
+                  showEffect="slide"
+                  hideEffect="explode" modal="true">
+            <h:form id="frmModificarAlumno">
+                <h:panelGrid id="pnlModificarAlumno" columns="2">
+                    <p:outputLabel for="dni" value="DNI: "/>
+                    <p:inputNumber id="dni" value="#{alumnoFormBean.unAlumno.dni}" required="true"/>
+                    <p:outputLabel for="apellido" value="Apellido: "/>
+                    <p:inputText id="apellido" value="#{alumnoFormBean.unAlumno.apellido}" required="true"/>
+                    <p:outputLabel for="nombre" value="Nombre: "/>
+                    <p:inputText id="nombre" value="#{alumnoFormBean.unAlumno.nombre}" required="true"/>
+                    <p:outputLabel for="fechanac" value="Fecha de Nacimiento: "/>
+                    <p:calendar id="fechanac" value="#{alumnoFormBean.unAlumno.fechaNac}" required="true"/>
+                    <p:outputLabel for="domicilio" value="Domicilio: "/>
+                    <p:inputText id="domicilio" value="#{alumnoFormBean.unAlumno.domicilio}" required="true"/>
+                    <p:outputLabel for="tel" value="Telefono: "/>
+                    <p:inputNumber id="tel" value="#{alumnoFormBean.unAlumno.telefono}" required="true"/>
+                    <p:outputLabel for="materia" value="Materia: "/>
+                    <p:selectOneMenu id="materia" value="#{alumnoFormBean.unAlumno.materia}" converter="omnifaces.SelectItemsConverter">
+                        <f:selectItems value="#{alumnoFormBean.listaMateria}" 
+                                       var="a" 
+                                       itemLabel="#{a.denominacion}" itemValue="#{a}"/>
+                    </p:selectOneMenu>
+                    <p:commandButton id="btnModificarAlumno" value="Modificar"
+                                     oncomplete="PF('modificarAlumno').hide()"
+                                     update=":frmAlumno" actionListener="#{alumnoFormBean.modificarAlumno()}">
+                        <p:confirm header="Pedido de Confirmacion"
+                                   message="¿Confirma modificacion del Alumno?"
+                                   icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton id="btnCerrarModificarAlumno"
+                                     value="Salir"
+                                     oncomplete="PF('modificarAlumno').hide()"/>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        <p:confirmDialog id="confirmacionDialogoAlumno"
+                         global="true" showEffect="fade"
+                         hideEffect="fade">
+            <h:form id="frmConfirmacionOperacionAlumno">
+                <p:commandButton value="Si" type="button"
+                                 styleClass="ui-confirmdialog-yes"
+                                 icon="ui-icon-check"/>
+                <p:commandButton value="NO" type="button"
+                                 styleClass="ui-confirmdialog-no"
+                                 icon="ui-icon-close"
+                                 style="float: right;"/>
+            </h:form>
+        </p:confirmDialog>
+        
+        <p:dialog id="dlgEliminarAlumno"
+                  widgetVar="eliminarAlumno"
+                  header="Eliminacion de Alumno"
+                  resizable="false"
+                  showEffect="explode"
+                  hideEffect="explode" modal="true">
+            <h:form id="frmEliminarAlumno">
+                <h:panelGrid id="pnlEliminarAlumno" columns="2">
+                    <p:outputLabel for="dni" value="DNI: "/>
+                    <p:outputLabel id="dni" value="#{alumnoFormBean.unAlumno.dni}"/>
+                    <p:outputLabel for="apellido" value="Apellido: "/>
+                    <p:outputLabel id="apellido" value="#{alumnoFormBean.unAlumno.apellido}"/>
+                    <p:outputLabel for="nombre" value="Nombre: "/>
+                    <p:outputLabel id="nombre" value="#{alumnoFormBean.unAlumno.nombre}"/>
+                    <p:outputLabel for="fechanac" value="Fecha de Nacimiento: "/>
+                    <p:outputLabel id="fechanac" value="#{alumnoFormBean.unAlumno.fechaNac}"/>
+                    <p:outputLabel for="domicilio" value="Domicilio: "/>
+                    <p:outputLabel id="domicilio" value="#{alumnoFormBean.unAlumno.domicilio}"/>
+                    <p:outputLabel for="tel" value="Telefono: "/>
+                    <p:outputLabel id="tel" value="#{alumnoFormBean.unAlumno.telefono}"/>
+                    <p:outputLabel for="materia" value="Materia: "/>
+                    <p:outputLabel id="materia" value="#{alumnoFormBean.unAlumno.materia}"/>
+                    <p:commandButton id="btnEliminarAlumno" value="Eliminar"
+                                     oncomplete="PF('eliminarAlumno').hide()"
+                                     update=":frmAlumno" actionListener="#{alumnoFormBean.eliminarAlumno()}">
+                        <p:confirm header="Pedido de Confirmacion"
+                                   message="¿Confirma eliminar el Alumno?"
+                                   icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton id="btnCerrarEliminarAlumno"
+                                     value="Salir"
+                                     oncomplete="PF('eliminarAlumno').hide()"/>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        <p:confirmDialog id="confirmacionDialogoAlumno2"
+                         global="true" showEffect="fade"
+                         hideEffect="fade">
+            <h:form id="frmConfirmacionOperacionAlumno2">
+                <p:commandButton value="SI" type="button"
+                                 styleClass="ui-confirmdialog-yes"
+                                 icon="ui-icon-check"/>
+                <p:commandButton value="NO" type="button"
+                                 styleClass="ui-confirmdialog-no"
+                                 icon="ui-icon-close"
+                                 style="float: right;"/>
+            </h:form>
+        </p:confirmDialog>
+        
+    </h:body>
+</html>
+
